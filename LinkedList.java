@@ -12,10 +12,18 @@ public class LinkedList{
     }
 
     /*
-     * Constructor creating instances of the class
+     * Constructor creating instances of the linked list calls
+     * 
+     * @param n, determines the lenght of the linked list
      */
-    public LinkedList(){
-        first = null;
+    public LinkedList(int n){
+        Cell last = null;
+        for (int i = 0; i < n; i++) {
+            Cell newCell = new Cell(i);
+            newCell.tail = last;
+            last = newCell;
+        }
+        first = last;
     }
 
     /*
@@ -77,12 +85,13 @@ public class LinkedList{
             if (current.head == item){
                 if (previous != null){
                     previous.tail = current.tail;
+                    return;
                 }
-                current = current.tail;
+                first = current.tail;
                 return;
             }
+            previous = current;
             current = current.tail;
-            previous = previous.tail;
         }
         return;
     }
@@ -98,7 +107,42 @@ public class LinkedList{
             current = current.tail;
         }
         current.tail = b.first;
-        b.first = null; // dont get it?
+        //b.first = null; // dont get it?
         return;
+    }
+
+    // prints all elements stored in every cell head in the linked list
+    public void printList(){
+        Cell current = first;
+        while(current != null){
+            System.out.print(current.head + " \n");
+            current = current.tail;
+        }
+        System.out.print("\n");
+        return;
+    }
+
+    /* push operation for a stack implementation of the linked list
+     * works the same as the add operation placing a new item at the top of the stack
+     * 
+     * @param item, the item to be placed at the top of the stack
+     */
+    public void push(int item){
+        Cell newCell = new Cell(item);
+        newCell.tail = first;
+        first = newCell;
+    }
+
+    /*
+     * pop operation for a stack implementation of the linked list
+     * creates a referance to the cell at the top of the stack
+     * extracts the item stored in that cell
+     * redirects the adress of the first cell to be the second cell on the stack thereby removing the first cell from the stack
+     */
+    public int pop(){
+        Cell itemToPop = first;
+        int itemToReturn = first.head;
+        first = itemToPop.tail;
+        return itemToReturn;
     }
 }
